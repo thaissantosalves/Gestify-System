@@ -36,7 +36,7 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
     onClose();
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!form.customer.trim()) {
       setError("Nome do cliente é obrigatório.");
@@ -52,14 +52,18 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
       setError("Informe o valor total do pedido.");
       return;
     }
-    addOrder({
-      customer: form.customer.trim(),
-      items,
-      total,
-      channel: form.channel,
-      status: form.status,
-    });
-    handleClose();
+    try {
+      await addOrder({
+        customer: form.customer.trim(),
+        items,
+        total,
+        channel: form.channel,
+        status: form.status,
+      });
+      handleClose();
+    } catch {
+      setError("Não foi possível criar o pedido.");
+    }
   }
 
   return (

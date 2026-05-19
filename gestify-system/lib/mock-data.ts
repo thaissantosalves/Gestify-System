@@ -10,6 +10,7 @@ export type Product = {
 
 export type StockMovement = {
   id: string;
+  productId?: string;
   product: string;
   type: "entrada" | "saída" | "ajuste";
   quantity: number;

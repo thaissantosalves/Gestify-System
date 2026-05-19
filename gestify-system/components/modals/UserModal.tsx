@@ -28,7 +28,7 @@ export default function UserModal({ open, onClose }: UserModalProps) {
     onClose();
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim()) {
       setError("Nome e e-mail são obrigatórios.");
@@ -38,13 +38,17 @@ export default function UserModal({ open, onClose }: UserModalProps) {
       setError("E-mail inválido.");
       return;
     }
-    addTeamMember({
-      name: form.name.trim(),
-      email: form.email.trim().toLowerCase(),
-      role: form.role,
-      status: form.status,
-    });
-    handleClose();
+    try {
+      await addTeamMember({
+        name: form.name.trim(),
+        email: form.email.trim().toLowerCase(),
+        role: form.role,
+        status: form.status,
+      });
+      handleClose();
+    } catch {
+      setError("Não foi possível convidar o usuário.");
+    }
   }
 
   return (

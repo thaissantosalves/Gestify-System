@@ -28,6 +28,13 @@ export default function RecentOrders() {
             </tr>
           </thead>
           <tbody>
+            {orders.length === 0 && (
+              <tr>
+                <td colSpan={5} className="text-secondary text-center">
+                  Nenhum pedido cadastrado.
+                </td>
+              </tr>
+            )}
             {orders.slice(0, 5).map((order) => (
               <tr key={order.id}>
                 <td className="text-brand">{order.id}</td>

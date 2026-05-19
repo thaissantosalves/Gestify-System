@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Modal from "@/components/ui/Modal";
 import { useAppStore } from "@/components/providers/AppStoreProvider";
-import type { StockMovement } from "@/lib/mock-data";
+import type { StockMovementType } from "@/lib/server/types";
 
 type StockModalProps = {
   open: boolean;
@@ -11,8 +11,8 @@ type StockModalProps = {
 };
 
 const empty = {
-  productName: "",
-  type: "entrada" as StockMovement["type"],
+  productId: "",
+  type: "entrada" as StockMovementType,
   quantity: "",
   user: "Thais Admin",
 };
@@ -21,6 +21,7 @@ export default function StockModal({ open, onClose }: StockModalProps) {
   const { products, addStockMovement } = useAppStore();
   const [form, setForm] = useState(empty);
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   function handleClose() {
     setForm(empty);
@@ -28,9 +29,9 @@ export default function StockModal({ open, onClose }: StockModalProps) {
     onClose();
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!form.productName) {
+    if (!form.productId) {
       setError("Selecione um produto.");
       return;
     }
@@ -39,13 +40,20 @@ export default function StockModal({ open, onClose }: StockModalProps) {
       setError("Informe uma quantidade válida.");
       return;
     }
-    addStockMovement({
-      productName: form.productName,
-      type: form.type,
-      quantity,
-      user: form.user.trim() || "Thais Admin",
-    });
-    handleClose();
+    setSubmitting(true);
+    try {
+      await addStockMovement({
+        productId: form.productId,
+        type: form.type,
+        quantity,
+        user: form.user.trim() || "Thais Admin",
+      });
+      handleClose();
+    } catch {
+      setError("Não foi possível registrar a movimentação.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -59,8 +67,13 @@ export default function StockModal({ open, onClose }: StockModalProps) {
           <button type="button" className="btn-ghost" onClick={handleClose}>
             Cancelar
           </button>
-          <button type="submit" form="stock-form" className="btn-primary">
-            Confirmar
+          <button
+            type="submit"
+            form="stock-form"
+            className="btn-primary"
+            disabled={submitting}
+          >
+            {submitting ? "Salvando..." : "Confirmar"}
           </button>
         </>
       }
@@ -71,13 +84,13 @@ export default function StockModal({ open, onClose }: StockModalProps) {
           <span className="form-field__label text-secondary">Produto</span>
           <select
             className="form-field__input bg-input text-primary"
-            value={form.productName}
-            onChange={(e) => setForm({ ...form, productName: e.target.value })}
+            value={form.productId}
+            onChange={(e) => setForm({ ...form, productId: e.target.value })}
             required
           >
             <option value="">Selecione...</option>
             {products.map((p) => (
-              <option key={p.id} value={p.name}>
+              <option key={p.id} value={p.id}>
                 {p.name} ({p.stock} un.)
               </option>
             ))}
@@ -91,7 +104,7 @@ export default function StockModal({ open, onClose }: StockModalProps) {
             onChange={(e) =>
               setForm({
                 ...form,
-                type: e.target.value as StockMovement["type"],
+                type: e.target.value as StockMovementType,
               })
             }
           >

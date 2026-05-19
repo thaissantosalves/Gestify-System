@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MuiIcon from "@/components/ui/MuiIcon";
@@ -15,17 +16,24 @@ export default function Sidebar() {
 
   return (
     <aside className="admin-sidebar bg-sidebar" aria-label="Menu principal">
-      <div className="admin-sidebar__brand">
-        <span className="admin-sidebar__logo text-inverse">G</span>
-        <span className="admin-sidebar__title">
-          <span className="text-brand block text-base font-bold leading-tight">
-            Gestify
-          </span>
-          <span className="text-sidebar-muted block text-xs font-normal">
-            Admin da loja
-          </span>
-        </span>
-      </div>
+      <Link href="/" className="admin-sidebar__brand" title="Gestify">
+        <Image
+          src="/logomini.png"
+          alt="Gestify"
+          width={40}
+          height={40}
+          className="admin-sidebar__logo admin-sidebar__logo--mini"
+          priority
+        />
+        <Image
+          src="/logo.png"
+          alt="Gestify"
+          width={200}
+          height={48}
+          className="admin-sidebar__logo admin-sidebar__logo--full"
+          priority
+        />
+      </Link>
 
       <nav className="admin-sidebar__nav">
         {navItems.map((item) => {

@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   title: "Gestify | Painel administrativo",
   description:
     "Sistema administrativo para gestão de loja, estoque, produtos e vendas.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

@@ -1,36 +1,53 @@
-import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
+"use client";
+
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import MuiIcon from "@/components/ui/MuiIcon";
+import type { DashboardStats } from "@/lib/dashboard/types";
+import { formatCurrency } from "@/lib/mock-data";
 
-const stats = [
-  {
-    variant: "stat-card--1" as const,
-    label: "Vendas da semana",
-    value: "R$ 12.450",
-    trend: "+18% em relação à semana anterior",
-    icon: TrendingUpOutlinedIcon,
-  },
-  {
-    variant: "stat-card--2" as const,
-    label: "Pedidos da semana",
-    value: "328",
-    trend: "+6% novos pedidos",
-    icon: ShoppingCartOutlinedIcon,
-  },
-  {
-    variant: "stat-card--3" as const,
-    label: "Clientes ativos",
-    value: "1.204",
-    trend: "+12% visitantes online",
-    icon: PeopleOutlinedIcon,
-  },
-];
+type StatCardsProps = {
+  stats: DashboardStats;
+};
 
-export default function StatCards() {
+export default function StatCards({ stats }: StatCardsProps) {
+  const cards = [
+    {
+      variant: "stat-card--1" as const,
+      label: "Faturamento total",
+      value: formatCurrency(stats.totalSales),
+      trend:
+        stats.ordersCount > 0
+          ? `${stats.ordersCount} pedido${stats.ordersCount !== 1 ? "s" : ""} no sistema`
+          : "Nenhum pedido ainda",
+      icon: AttachMoneyOutlinedIcon,
+    },
+    {
+      variant: "stat-card--2" as const,
+      label: "Pedidos",
+      value: String(stats.ordersCount),
+      trend:
+        stats.pendingOrders > 0
+          ? `${stats.pendingOrders} pendente${stats.pendingOrders !== 1 ? "s" : ""}`
+          : "Nenhum pendente",
+      icon: ShoppingCartOutlinedIcon,
+    },
+    {
+      variant: "stat-card--3" as const,
+      label: "Estoque",
+      value: String(stats.activeProducts),
+      trend:
+        stats.lowStock + stats.outOfStock > 0
+          ? `${stats.lowStock} baixo · ${stats.outOfStock} esgotado`
+          : `${stats.activeProducts} produto${stats.activeProducts !== 1 ? "s" : ""} ativos`,
+      icon: InventoryOutlinedIcon,
+    },
+  ];
+
   return (
     <section className="dashboard__stats" aria-label="Indicadores principais">
-      {stats.map((stat) => (
+      {cards.map((stat) => (
         <article key={stat.label} className={`stat-card ${stat.variant}`}>
           <div className="stat-card__icon-wrap">
             <MuiIcon icon={stat.icon} size={28} />

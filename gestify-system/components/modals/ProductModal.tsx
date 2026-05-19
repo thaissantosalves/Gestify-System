@@ -32,7 +32,7 @@ export default function ProductModal({ open, onClose }: ProductModalProps) {
     onClose();
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.sku.trim()) {
       setError("Nome e SKU são obrigatórios.");
@@ -50,15 +50,19 @@ export default function ProductModal({ open, onClose }: ProductModalProps) {
     }
     let status = form.status;
     if (stock === 0) status = "esgotado";
-    addProduct({
-      name: form.name.trim(),
-      sku: form.sku.trim().toUpperCase(),
-      category: form.category,
-      price,
-      stock,
-      status,
-    });
-    handleClose();
+    try {
+      await addProduct({
+        name: form.name.trim(),
+        sku: form.sku.trim().toUpperCase(),
+        category: form.category,
+        price,
+        stock,
+        status,
+      });
+      handleClose();
+    } catch {
+      setError("Não foi possível salvar o produto.");
+    }
   }
 
   return (

@@ -11,8 +11,8 @@ export default function ConfiguracoesView() {
   const { pushNotification } = useAppStore();
   const [saved, setSaved] = useState(false);
 
-  function handleSave() {
-    pushNotification({
+  async function handleSave() {
+    await pushNotification({
       title: "Configurações salvas",
       message: "Os dados da loja foram atualizados com sucesso.",
       type: "sistema",
