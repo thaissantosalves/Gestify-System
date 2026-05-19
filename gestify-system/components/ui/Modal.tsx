@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId } from "react";
+import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MuiIcon from "@/components/ui/MuiIcon";
 
@@ -24,6 +25,11 @@ export default function Modal({
   size = "md",
 }: ModalProps) {
   const titleId = useId();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -38,9 +44,9 @@ export default function Modal({
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
+  return createPortal(
     <div className="modal-root" role="presentation">
       <button
         type="button"
@@ -75,6 +81,7 @@ export default function Modal({
         <div className="modal-body">{children}</div>
         {footer ? <footer className="modal-footer">{footer}</footer> : null}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -11,12 +11,26 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export default function Sidebar() {
+type SidebarProps = {
+  mobileOpen?: boolean;
+  onNavigate?: () => void;
+};
+
+export default function Sidebar({ mobileOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="admin-sidebar bg-sidebar" aria-label="Menu principal">
-      <Link href="/" className="admin-sidebar__brand" title="Gestify">
+    <aside
+      className={`admin-sidebar bg-sidebar${mobileOpen ? " admin-sidebar--open" : ""}`}
+      aria-label="Menu principal"
+      aria-hidden={false}
+    >
+      <Link
+        href="/"
+        className="admin-sidebar__brand"
+        title="Gestify"
+        onClick={onNavigate}
+      >
         <Image
           src="/logomini.png"
           alt="Gestify"
@@ -36,6 +50,7 @@ export default function Sidebar() {
       </Link>
 
       <nav className="admin-sidebar__nav">
+        <p className="admin-sidebar__nav-label">Navegação</p>
         {navItems.map((item) => {
           const active = isActive(pathname, item.href);
 
@@ -47,6 +62,7 @@ export default function Sidebar() {
                 active ? "admin-sidebar__link--active" : ""
               }`}
               title={item.label}
+              onClick={onNavigate}
             >
               <span className="admin-sidebar__icon">
                 <MuiIcon icon={item.icon} size={22} />
@@ -57,8 +73,11 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <footer className="admin-sidebar__footer text-sidebar-muted text-xs">
-        Gestify System v0.1
+      <footer className="admin-sidebar__footer">
+        <div className="admin-sidebar__status">
+          <span className="admin-sidebar__status-dot" aria-hidden />
+          <span className="text-sidebar-muted text-xs">Loja online · v0.1</span>
+        </div>
       </footer>
     </aside>
   );

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import ThemeScript from "@/components/providers/ThemeScript";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const display = Bricolage_Grotesque({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const body = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable} h-full antialiased`}
       data-theme="dark"
       suppressHydrationWarning
     >

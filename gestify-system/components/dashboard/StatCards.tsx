@@ -14,7 +14,7 @@ type StatCardsProps = {
 export default function StatCards({ stats }: StatCardsProps) {
   const cards = [
     {
-      variant: "stat-card--1" as const,
+      variant: "stat-card--revenue" as const,
       label: "Faturamento total",
       value: formatCurrency(stats.totalSales),
       trend:
@@ -24,7 +24,7 @@ export default function StatCards({ stats }: StatCardsProps) {
       icon: AttachMoneyOutlinedIcon,
     },
     {
-      variant: "stat-card--2" as const,
+      variant: "stat-card--orders" as const,
       label: "Pedidos",
       value: String(stats.ordersCount),
       trend:
@@ -34,7 +34,7 @@ export default function StatCards({ stats }: StatCardsProps) {
       icon: ShoppingCartOutlinedIcon,
     },
     {
-      variant: "stat-card--3" as const,
+      variant: "stat-card--stock" as const,
       label: "Estoque",
       value: String(stats.activeProducts),
       trend:
@@ -49,10 +49,12 @@ export default function StatCards({ stats }: StatCardsProps) {
     <section className="dashboard__stats" aria-label="Indicadores principais">
       {cards.map((stat) => (
         <article key={stat.label} className={`stat-card ${stat.variant}`}>
-          <div className="stat-card__icon-wrap">
-            <MuiIcon icon={stat.icon} size={28} />
+          <div className="stat-card__head">
+            <p className="stat-card__label">{stat.label}</p>
+            <div className="stat-card__icon-wrap">
+              <MuiIcon icon={stat.icon} size={22} />
+            </div>
           </div>
-          <p className="stat-card__label">{stat.label}</p>
           <p className="stat-card__value">{stat.value}</p>
           <p className="stat-card__trend">{stat.trend}</p>
         </article>

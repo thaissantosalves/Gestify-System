@@ -32,7 +32,7 @@ export default function NotificationsDropdown() {
     <div className="notifications-wrap" ref={ref}>
       <button
         type="button"
-        className="admin-header__icon-btn notifications-trigger"
+        className="header-action-btn notifications-trigger"
         aria-label="Notificações"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}

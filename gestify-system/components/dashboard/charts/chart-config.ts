@@ -26,14 +26,14 @@ ChartJS.register(
 );
 
 export const CHART_COLORS = [
-  "#7c3aed",
-  "#f687b3",
-  "#63b3ed",
-  "#f6ad55",
-  "#68d391",
-  "#b794f6",
-  "#fc8181",
-  "#4fd1c5",
+  "#8b7cf8",
+  "#5eead4",
+  "#e8a87c",
+  "#f472b6",
+  "#a599ff",
+  "#2dd4bf",
+  "#fb923c",
+  "#c4b8ff",
 ];
 
 export function readChartTheme() {
@@ -64,7 +64,7 @@ export function baseChartOptions() {
           color: theme.text,
           usePointStyle: true,
           padding: 16,
-          font: { family: "var(--font-inter), system-ui, sans-serif", size: 12 },
+          font: { family: "var(--font-body), system-ui, sans-serif", size: 12 },
         },
       },
       tooltip: {
