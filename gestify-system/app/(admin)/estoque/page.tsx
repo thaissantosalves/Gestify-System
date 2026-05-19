@@ -1,14 +1,5 @@
-import SectionPlaceholder from "@/components/admin/SectionPlaceholder";
+import EstoqueView from "@/components/estoque/EstoqueView";
 
 export default function EstoquePage() {
-  return (
-    <SectionPlaceholder
-      items={[
-        "Saldo por produto",
-        "Entrada de mercadorias",
-        "Saída e ajustes",
-        "Histórico de movimentações",
-      ]}
-    />
-  );
+  return <EstoqueView />;
 }

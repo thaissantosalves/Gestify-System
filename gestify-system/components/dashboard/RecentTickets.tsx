@@ -1,62 +1,45 @@
-const tickets = [
-  {
-    id: "#1024",
-    client: "Maria Silva",
-    subject: "Pedido atrasado",
-    date: "19/05/2026",
-    status: "Pendente",
-    badge: "badge--warning" as const,
-  },
-  {
-    id: "#1023",
-    client: "João Santos",
-    subject: "Troca de produto",
-    date: "18/05/2026",
-    status: "Em andamento",
-    badge: "badge--warning" as const,
-  },
-  {
-    id: "#1022",
-    client: "Ana Costa",
-    subject: "Dúvida sobre estoque",
-    date: "18/05/2026",
-    status: "Resolvido",
-    badge: "badge--success" as const,
-  },
-  {
-    id: "#1021",
-    client: "Pedro Lima",
-    subject: "Cancelamento",
-    date: "17/05/2026",
-    status: "Urgente",
-    badge: "badge--danger" as const,
-  },
-];
+"use client";
 
-export default function RecentTickets() {
+import { useAppStore } from "@/components/providers/AppStoreProvider";
+import { formatCurrency, orderStatusBadge } from "@/lib/mock-data";
+
+const statusLabels = {
+  pendente: "Pendente",
+  pago: "Pago",
+  enviado: "Enviado",
+  cancelado: "Cancelado",
+} as const;
+
+export default function RecentOrders() {
+  const { orders } = useAppStore();
+
   return (
     <article className="panel-card">
-      <h2 className="panel-card__title">Tickets recentes</h2>
-      <div style={{ overflowX: "auto" }}>
+      <h2 className="panel-card__title">Pedidos recentes</h2>
+      <div className="table-wrap">
         <table className="data-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Pedido</th>
               <th>Cliente</th>
-              <th>Assunto</th>
-              <th>Data</th>
+              <th>Total</th>
+              <th>Canal</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {tickets.map((ticket) => (
-              <tr key={ticket.id}>
-                <td className="text-brand">{ticket.id}</td>
-                <td>{ticket.client}</td>
-                <td>{ticket.subject}</td>
-                <td className="text-secondary">{ticket.date}</td>
+            {orders.slice(0, 5).map((order) => (
+              <tr key={order.id}>
+                <td className="text-brand">{order.id}</td>
+                <td>{order.customer}</td>
+                <td>{formatCurrency(order.total)}</td>
+                <td className="text-secondary">{order.channel}</td>
                 <td>
-                  <span className={`badge ${ticket.badge}`}>{ticket.status}</span>
+                  <span
+                    className={`badge badge--${orderStatusBadge(order.status)}`}
+                  >
+                    {statusLabels[order.status]}
+                  </span>
                 </td>
               </tr>
             ))}

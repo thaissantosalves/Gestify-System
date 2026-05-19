@@ -1,14 +1,5 @@
-import SectionPlaceholder from "@/components/admin/SectionPlaceholder";
+import ProdutosView from "@/components/produtos/ProdutosView";
 
 export default function ProdutosPage() {
-  return (
-    <SectionPlaceholder
-      items={[
-        "Listagem de produtos",
-        "Cadastro e edição",
-        "Categorias",
-        "Tabela de preços",
-      ]}
-    />
-  );
+  return <ProdutosView />;
 }

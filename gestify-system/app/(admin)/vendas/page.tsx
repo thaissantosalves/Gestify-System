@@ -1,14 +1,5 @@
-import SectionPlaceholder from "@/components/admin/SectionPlaceholder";
+import VendasView from "@/components/vendas/VendasView";
 
 export default function VendasPage() {
-  return (
-    <SectionPlaceholder
-      items={[
-        "Pedidos em andamento",
-        "Vendas concluídas",
-        "Cancelamentos",
-        "Relatório por período",
-      ]}
-    />
-  );
+  return <VendasView />;
 }
